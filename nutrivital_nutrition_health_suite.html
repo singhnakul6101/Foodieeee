@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NutriVital — Fresh Nutrition Explorer &amp; Health Calculators</title>
+
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Configure Tailwind to use Inter as the default sans font
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-emerald-50/40 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-emerald-200 selection:text-emerald-900">
+
+  <!-- ==================== STICKY TOP NAVIGATION BAR ==================== -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-emerald-100/80 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3 gap-3">
+
+        <!-- Brand Logo -->
+        <div class="flex items-center justify-between">
+          <button
+            type="button"
+            onclick="switchTab('explorer')"
+            class="flex items-center gap-2.5 group focus:outline-none rounded-xl p-1"
+            aria-label="NutriVital Home"
+          >
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-200 group-hover:scale-105 transition-transform">
+              <!-- Leaf SVG Icon -->
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+              </svg>
+            </div>
+            <div class="text-left">
+              <span class="block text-xl font-extrabold tracking-tight text-slate-900 leading-none">
+                Nutri<span class="text-emerald-600">Vital</span>
+              </span>
+              <span class="block text-[11px] font-medium text-slate-500 tracking-wide uppercase mt-0.5">
+                Fresh Nutrition Suite
+              </span>
+            </div>
+          </button>
+
+          <!-- Subtle Badge on Mobile -->
+          <span class="md:hidden inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-1 rounded-full">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            24 Produce Items
+          </span>
+        </div>
+
+        <!-- Primary Navigation Tabs -->
+        <nav class="flex items-center bg-slate-100/90 p-1 rounded-2xl border border-slate-200/70 w-full md:w-auto" aria-label="Main Sections">
+          <button
+            id="nav-explorer"
+            type="button"
+            onclick="switchTab('explorer')"
+            class="nav-tab flex-1 md:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 bg-white text-emerald-700 shadow-sm"
+            aria-current="page"
+          >
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.05 6.05a7.5 7.5 0 0 0 10.6 10.6Z" />
+            </svg>
+            <span>Explorer</span>
+          </button>
+
+          <button
+            id="nav-bmi"
+            type="button"
+            onclick="switchTab('bmi')"
+            class="nav-tab flex-1 md:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900"
+          >
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-7-7 7-7 7 7" />
+              <rect x="3" y="4" width="18" height="16" rx="3" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>BMI Calc</span>
+          </button>
+
+          <button
+            id="nav-protein"
+            type="button"
+            onclick="switchTab('protein')"
+            class="nav-tab flex-1 md:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900"
+          >
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7Z" />
+            </svg>
+            <span>Protein Calc</span>
+          </button>
+        </nav>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+    <!-- ================================================================ -->
+    <!-- SECTION 1: FRUITS & VEGETABLES NUTRITIONAL EXPLORER              -->
+    <!-- ================================================================ -->
+    <section id="section-explorer" class="space-y-6">
+
+      <!-- Section Intro Banner -->
+      <div class="bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-700 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-emerald-900/10 relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl">
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider bg-white/15 backdrop-blur-sm border border-white/20 px-3 py-1 rounded-full mb-3">
+            Whole Foods Database
+          </span>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            Fruits &amp; Vegetables Nutritional Explorer
+          </h1>
+          <p class="text-emerald-50/95 text-sm sm:text-base mt-2 leading-relaxed">
+            Discover calories, macronutrients, key vitamins, and health benefits for 24 nutrient-dense fruits and vegetables. Click any card to customize serving sizes from 50g to 300g.
+          </p>
+        </div>
+        <!-- Decorative Soft Circles -->
+        <div class="hidden sm:block absolute -right-10 -top-10 w-52 h-52 rounded-full bg-white/10 pointer-events-none"></div>
+        <div class="hidden sm:block absolute right-16 -bottom-16 w-40 h-40 rounded-full bg-amber-300/20 pointer-events-none"></div>
+      </div>
+
+      <!-- Search, Category Filter & Sort Toolbar -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-100 shadow-sm space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-center gap-4">
+
+          <!-- Search Input -->
+          <div class="relative flex-1">
+            <div class="pointer-events-none absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.05 6.05a7.5 7.5 0 0 0 10.6 10.6Z" />
+              </svg>
+            </div>
+            <input
+              id="explorer-search"
+              type="text"
+              placeholder="Search produce (e.g., Avocado, Spinach, Blueberries)..."
+              class="w-full pl-11 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 transition-all"
+              oninput="renderProduceGrid()"
+            />
+            <button
+              id="clear-search-btn"
+              type="button"
+              onclick="clearSearch()"
+              class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+              aria-label="Clear search"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-0.5 sm:pb-0" role="group" aria-label="Category filter">
+            <button
+              type="button"
+              data-category="All"
+              onclick="setCategoryFilter('All')"
+              class="category-pill px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-emerald-600 text-white shadow-sm"
+            >
+              All <span id="count-all" class="ml-1 opacity-80">(24)</span>
+            </button>
+            <button
+              type="button"
+              data-category="Fruit"
+              onclick="setCategoryFilter('Fruit')"
+              class="category-pill px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-slate-100 text-slate-600 hover:bg-slate-200/80"
+            >
+              Fruits <span id="count-fruit" class="ml-1 opacity-80">(11)</span>
+            </button>
+            <button
+              type="button"
+              data-category="Vegetable"
+              onclick="setCategoryFilter('Vegetable')"
+              class="category-pill px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-slate-100 text-slate-600 hover:bg-slate-200/80"
+            >
+              Vegetables <span id="count-vegetable" class="ml-1 opacity-80">(13)</span>
+            </button>
+          </div>
+
+          <!-- Sort Dropdown -->
+          <div class="flex items-center gap-2 shrink-0">
+            <label for="explorer-sort" class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sort:</label>
+            <select
+              id="explorer-sort"
+              onchange="renderProduceGrid()"
+              class="flex-1 lg:flex-none bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 cursor-pointer"
+            >
+              <option value="az">Name (A–Z)</option>
+              <option value="low-cal">Lowest Calories</option>
+              <option value="high-protein">Highest Protein</option>
+              <option value="high-fiber">Highest Fiber</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Active Results Meta -->
+        <div class="flex items-center justify-between text-xs text-slate-500 pt-1 border-t border-slate-100">
+          <span id="results-summary">Showing 24 of 24 items</span>
+          <span>Values shown per 100g raw edible portion</span>
+        </div>
+      </div>
+
+      <!-- Produce Cards Grid -->
+      <div id="produce-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <!-- Populated dynamically by JavaScript -->
+      </div>
+
+      <!-- Empty State (Shown when search yields no matches) -->
+      <div id="explorer-empty" class="hidden bg-white rounded-3xl border border-slate-200/80 p-10 text-center shadow-sm">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mb-4 text-3xl">
+          🥗
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">No matching produce found</h3>
+        <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">
+          Try adjusting your search term or switching back to all categories to explore the full NutriVital catalog.
+        </p>
+        <button
+          type="button"
+          onclick="resetExplorerFilters()"
+          class="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
+        >
+          Reset Filters
+        </button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- SECTION 2: BMI CALCULATOR                                        -->
+    <!-- ================================================================ -->
+    <section id="section-bmi" class="hidden space-y-6">
+
+      <!-- Section Intro Banner -->
+      <div class="bg-gradient-to-br from-teal-600 via-emerald-600 to-emerald-700 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-emerald-900/10">
+        <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider bg-white/15 border border-white/20 px-3 py-1 rounded-full mb-3">
+          Body Composition Screening
+        </span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          Body Mass Index (BMI) Calculator
+        </h1>
+        <p class="text-emerald-50/95 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
+          Quickly check your BMI using Metric or Imperial units, view where your score lands on the clinical scale, and see the estimated healthy weight range for your height.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- BMI Inputs Card -->
+        <div class="lg:col-span-5 bg-white rounded-3xl p-6 border border-emerald-100 shadow-sm space-y-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-bold text-slate-900">Your Measurements</h2>
+
+            <!-- Metric / Imperial Toggle -->
+            <div class="inline-flex bg-slate-100 p-1 rounded-xl border border-slate-200/70" role="group" aria-label="BMI Unit System">
+              <button
+                id="bmi-unit-metric"
+                type="button"
+                onclick="setBmiUnit('metric')"
+                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-emerald-700 shadow-sm"
+              >
+                Metric (cm/kg)
+              </button>
+              <button
+                id="bmi-unit-imperial"
+                type="button"
+                onclick="setBmiUnit('imperial')"
+                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900"
+              >
+                Imperial (ft/lbs)
+              </button>
+            </div>
+          </div>
+
+          <!-- Metric Inputs -->
+          <div id="bmi-metric-fields" class="space-y-4">
+            <div>
+              <label for="bmi-height-cm" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                Height <span class="text-slate-400 font-normal">(cm)</span>
+              </label>
+              <div class="relative">
+                <input
+                  id="bmi-height-cm"
+                  type="number"
+                  min="50"
+                  max="270"
+                  step="0.5"
+                  value="172"
+                  oninput="calculateBMI()"
+                  class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500"
+                />
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 uppercase">cm</span>
+              </div>
+            </div>
+
+            <div>
+              <label for="bmi-weight-kg" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                Weight <span class="text-slate-400 font-normal">(kg)</span>
+              </label>
+              <div class="relative">
+                <input
+                  id="bmi-weight-kg"
+                  type="number"
+                  min="15"
+                  max="350"
+                  step="0.1"
+                  value="68"
+                  oninput="calculateBMI()"
+                  class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500"
+                />
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 uppercase">kg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Imperial Inputs -->
+          <div id="bmi-imperial-fields" class="hidden space-y-4">
+            <div>
+              <span class="block text-sm font-semibold text-slate-700 mb-1.5">
+                Height <span class="text-slate-400 font-normal">(ft &amp; in)</span>
+              </span>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="relative">
+                  <input
+                    id="bmi-height-ft"
+                    type="number"
+                    min="2"
+                    max="8"
+                    step="1"
+                    value="5"
+                    oninput="calculateBMI()"
+                    aria-label="Height in feet"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500"
+                  />
+                  <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 uppercase">ft</span>
+                </div>
+                <div class="relative">
+                  <input
+                    id="bmi-height-in"
+                    type="number"
+                    min="0"
+                    max="11.9"
+                    step="0.5"
+                    value="8"
+                    oninput="calculateBMI()"
+                    aria-label="Height in inches"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500"
+                  />
+                  <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 uppercase">in</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label for="bmi-weight-lbs" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                Weight <span class="text-slate-400 font-normal">(lbs)</span>
+              </label>
+              <div class="relative">
+                <input
+                  id="bmi-weight-lbs"
+                  type="number"
+                  min="35"
+                  max="770"
+                  step="0.5"
+                  value="150"
+                  oninput="calculateBMI()"
+                  class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500"
+                />
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 uppercase">lbs</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Validation Message Box -->
+          <div id="bmi-error" class="hidden rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-xs font-medium text-rose-700">
+            Please enter valid positive height and weight values to calculate your BMI.
+          </div>
+
+          <!-- Category Reference Legend -->
+          <div class="pt-4 border-t border-slate-100">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">WHO Adult BMI Categories</h3>
+            <div class="grid grid-cols-2 gap-2.5 text-xs">
+              <div class="flex items-center justify-between bg-sky-50/70 border border-sky-100 rounded-xl px-3 py-2">
+                <span class="font-semibold text-sky-800">Underweight</span>
+                <span class="font-bold text-sky-600">&lt; 18.5</span>
+              </div>
+              <div class="flex items-center justify-between bg-emerald-50/80 border border-emerald-100 rounded-xl px-3 py-2">
+                <span class="font-semibold text-emerald-800">Normal</span>
+                <span class="font-bold text-emerald-600">18.5 – 24.9</span>
+              </div>
+              <div class="flex items-center justify-between bg-amber-50/80 border border-amber-100 rounded-xl px-3 py-2">
+                <span class="font-semibold text-amber-800">Overweight</span>
+                <span class="font-bold text-amber-600">25.0 – 29.9</span>
+              </div>
+              <div class="flex items-center justify-between bg-rose-50/80 border border-rose-100 rounded-xl px-3 py-2">
+                <span class="font-semibold text-rose-800">Obese</span>
+                <span class="font-bold text-rose-600">&ge; 30.0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BMI Result & Visual Gauge Card -->
+        <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-emerald-100 shadow-sm space-y-6">
+
+          <!-- Score Header -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Your Calculated BMI</span>
+              <div class="flex items-baseline gap-3 mt-1">
+                <span id="bmi-score" class="text-5xl font-extrabold tracking-tight text-slate-900">23.0</span>
+                <span class="text-sm font-medium text-slate-400">kg/m&sup2;</span>
+              </div>
+            </div>
+
+            <div class="sm:text-right">
+              <span class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Classification</span>
+              <span id="bmi-category-badge" class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold bg-emerald-100 text-emerald-800">
+                <span id="bmi-category-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span id="bmi-category-text">Normal Weight</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Visual Color-Coded Horizontal Gauge -->
+          <div class="space-y-3 pt-2">
+            <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
+              <span>BMI Scale Visual</span>
+              <span id="bmi-marker-label" class="text-emerald-700 font-bold">23.0 (Normal)</span>
+            </div>
+
+            <!-- Gauge Track + Animated Pin -->
+            <div class="relative pt-7 pb-2">
+              <!-- Animated Pointer -->
+              <div
+                id="bmi-gauge-marker"
+                class="absolute top-0 -translate-x-1/2 transition-all duration-500 ease-out flex flex-col items-center z-10"
+                style="left: 42%;"
+              >
+                <span id="bmi-pin-pill" class="px-2 py-0.5 rounded-md bg-slate-900 text-white text-[11px] font-bold shadow-md whitespace-nowrap">
+                  23.0
+                </span>
+                <div class="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-slate-900"></div>
+              </div>
+
+              <!-- Segmented Bar (Scale maps BMI 12 to 42 -> 30-unit span) -->
+              <!-- Underweight: 12 to 18.5 = 6.5/30 = 21.67% -->
+              <!-- Normal: 18.5 to 25 = 6.5/30 = 21.67% -->
+              <!-- Overweight: 25 to 30 = 5/30 = 16.67% -->
+              <!-- Obese: 30 to 42 = 12/30 = 40% -->
+              <div class="h-4 w-full rounded-full overflow-hidden flex shadow-inner bg-slate-100">
+                <div class="h-full bg-sky-400" style="width: 21.67%;" title="Underweight (< 18.5)"></div>
+                <div class="h-full bg-emerald-500" style="width: 21.67%;" title="Normal (18.5 – 24.9)"></div>
+                <div class="h-full bg-amber-400" style="width: 16.67%;" title="Overweight (25.0 – 29.9)"></div>
+                <div class="h-full bg-rose-500" style="width: 39.99%;" title="Obese (≥ 30.0)"></div>
+              </div>
+
+              <!-- Scale Threshold Ticks -->
+              <div class="relative h-5 mt-1.5 text-[11px] font-semibold text-slate-400 select-none">
+                <span class="absolute left-0">12</span>
+                <span class="absolute -translate-x-1/2" style="left: 21.67%;">18.5</span>
+                <span class="absolute -translate-x-1/2" style="left: 43.33%;">25</span>
+                <span class="absolute -translate-x-1/2" style="left: 60%;">30</span>
+                <span class="absolute right-0">42+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estimated Healthy Weight Range Box -->
+          <div class="bg-emerald-50/70 border border-emerald-200/70 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-emerald-950">Estimated Healthy Weight Range</h3>
+                <p id="bmi-healthy-subtext" class="text-xs text-emerald-800/80 mt-0.5">
+                  Based on a normal BMI (18.5 – 24.9) for your height
+                </p>
+              </div>
+            </div>
+            <div id="bmi-healthy-range" class="text-lg sm:text-xl font-extrabold text-emerald-700 whitespace-nowrap sm:text-right">
+              54.7 – 73.7 kg
+            </div>
+          </div>
+
+          <!-- Grounded Context Note -->
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/70 text-xs text-slate-600 leading-relaxed space-y-1.5">
+            <p class="font-bold text-slate-800 flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+              </svg>
+              Understanding Your BMI
+            </p>
+            <p>
+              BMI is a useful general screening metric derived solely from height and weight, but it does not directly measure body fat percentage, muscle mass, bone density, or fat distribution. Muscular individuals may fall into a higher BMI range while maintaining low body fat. Always consult a healthcare professional for personalized health assessments.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- SECTION 3: DAILY PROTEIN CALCULATOR                              -->
+    <!-- ================================================================ -->
+    <section id="section-protein" class="hidden space-y-6">
+
+      <!-- Section Intro Banner -->
+      <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-emerald-600 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-orange-900/10">
+        <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider bg-white/15 border border-white/20 px-3 py-1 rounded-full mb-3">
+          Evidence-Based Nutrition
+        </span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          Daily Protein Intake Calculator
+        </h1>
+        <p class="text-amber-50/95 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
+          Calculate your personalized daily protein range and optimal target based on your body weight, training volume, and primary physique goal, plus per-meal targets and plant-protein produce picks.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Protein Inputs Card -->
+        <div class="lg:col-span-5 bg-white rounded-3xl p-6 border border-emerald-100 shadow-sm space-y-6">
+
+          <!-- Weight & Unit Toggle -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="protein-weight" class="text-sm font-bold text-slate-800">Body Weight</label>
+              <div class="inline-flex bg-slate-100 p-1 rounded-xl border border-slate-200/70" role="group" aria-label="Protein Weight Unit">
+                <button
+                  id="protein-unit-kg"
+                  type="button"
+                  onclick="setProteinUnit('kg')"
+                  class="px-3 py-1 rounded-lg text-xs font-semibold transition-all bg-white text-emerald-700 shadow-sm"
+                >
+                  kg
+                </button>
+                <button
+                  id="protein-unit-lbs"
+                  type="button"
+                  onclick="setProteinUnit('lbs')"
+                  class="px-3 py-1 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900"
+                >
+                  lbs
+                </button>
+              </div>
+            </div>
+            <div class="relative">
+              <input
+                id="protein-weight"
+                type="number"
+                min="25"
+                max="350"
+                step="0.5"
+                value="70"
+                oninput="calculateProtein()"
+                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500"
+              />
+              <span id="protein-weight-unit-label" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 uppercase">kg</span>
+            </div>
+          </div>
+
+          <!-- Activity Level -->
+          <div>
+            <label for="protein-activity" class="block text-sm font-bold text-slate-800 mb-2">
+              Activity Level
+            </label>
+            <select
+              id="protein-activity"
+              onchange="calculateProtein()"
+              class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 cursor-pointer"
+            >
+              <option value="sedentary">Sedentary (desk job, minimal exercise)</option>
+              <option value="light">Lightly Active (light exercise 1–3 days/wk)</option>
+              <option value="moderate" selected>Moderately Active (training 3–5 days/wk)</option>
+              <option value="very">Very Active (intense training 6–7 days/wk)</option>
+              <option value="athlete">Athlete (high-volume daily or 2x/day training)</option>
+            </select>
+          </div>
+
+          <!-- Primary Goal -->
+          <div>
+            <span class="block text-sm font-bold text-slate-800 mb-2">Primary Goal</span>
+            <div class="grid grid-cols-1 gap-2.5" role="radiogroup" aria-label="Primary Goal">
+              <button
+                type="button"
+                data-goal="maintain"
+                onclick="setProteinGoal('maintain')"
+                class="goal-btn text-left p-3.5 rounded-2xl border-2 transition-all border-emerald-500 bg-emerald-50/70"
+              >
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-bold text-slate-900">Maintain Health</span>
+                  <span class="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Balanced</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Support daily recovery, immunity, and lean tissue.</p>
+              </button>
+
+              <button
+                type="button"
+                data-goal="fatloss"
+                onclick="setProteinGoal('fatloss')"
+                class="goal-btn text-left p-3.5 rounded-2xl border-2 transition-all border-slate-200 bg-white hover:border-slate-300"
+              >
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-bold text-slate-900">Fat Loss / Lean Cut</span>
+                  <span class="text-xs font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">Muscle-Sparing</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Higher intake boosts satiety and preserves muscle in a calorie deficit.</p>
+              </button>
+
+              <button
+                type="button"
+                data-goal="muscle"
+                onclick="setProteinGoal('muscle')"
+                class="goal-btn text-left p-3.5 rounded-2xl border-2 transition-all border-slate-200 bg-white hover:border-slate-300"
+              >
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-bold text-slate-900">Muscle Gain / Hypertrophy</span>
+                  <span class="text-xs font-semibold text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full">Anabolic</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Maximizes muscle protein synthesis alongside resistance training.</p>
+              </button>
+            </div>
+          </div>
+
+          <!-- Validation Message Box -->
+          <div id="protein-error" class="hidden rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-xs font-medium text-rose-700">
+            Please enter a valid positive body weight to calculate your protein target.
+          </div>
+        </div>
+
+        <!-- Protein Results & Produce Highlights -->
+        <div class="lg:col-span-7 space-y-6">
+
+          <!-- Main Target Card -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-100 shadow-sm space-y-6">
+
+            <!-- Optimal Target Hero -->
+            <div class="bg-gradient-to-br from-emerald-50 via-teal-50/70 to-amber-50/50 border border-emerald-200/70 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  Optimal Daily Target
+                </span>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span id="protein-optimal" class="text-5xl font-extrabold text-slate-900 tracking-tight">95</span>
+                  <span class="text-lg font-bold text-emerald-700">g / day</span>
+                </div>
+                <p id="protein-multiplier-note" class="text-xs font-medium text-slate-500 mt-1.5">
+                  Evidence-based range: 1.2 – 1.5 g per kg of body weight
+                </p>
+              </div>
+
+              <div class="bg-white/90 rounded-2xl px-5 py-3.5 border border-emerald-100 shadow-sm sm:text-right">
+                <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Recommended Range</span>
+                <span id="protein-range" class="block text-xl font-extrabold text-emerald-700 mt-0.5">84 – 105 g</span>
+                <span id="protein-kcal-equiv" class="block text-xs text-slate-500 mt-0.5">~380 kcal from protein</span>
+              </div>
+            </div>
+
+            <!-- Per-Meal Breakdown (3 vs 4 Meals) -->
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 mb-3">Even Per-Meal Distribution</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between">
+                  <div>
+                    <span class="block text-xs font-bold uppercase tracking-wider text-slate-400">3 Meals / Day</span>
+                    <span class="block text-xs text-slate-500 mt-0.5">Breakfast, Lunch, Dinner</span>
+                  </div>
+                  <div class="text-right">
+                    <span id="protein-3-meals" class="text-2xl font-extrabold text-slate-900">32g</span>
+                    <span class="block text-[11px] font-semibold text-emerald-600">per meal</span>
+                  </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between">
+                  <div>
+                    <span class="block text-xs font-bold uppercase tracking-wider text-slate-400">4 Meals / Day</span>
+                    <span class="block text-xs text-slate-500 mt-0.5">3 Main + 1 Protein Snack</span>
+                  </div>
+                  <div class="text-right">
+                    <span id="protein-4-meals" class="text-2xl font-extrabold text-slate-900">24g</span>
+                    <span class="block text-[11px] font-semibold text-amber-600">per meal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Higher-Protein Produce from Catalog -->
+          <div class="bg-white rounded-3xl p-6 border border-emerald-100 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Top High-Protein Produce Picks</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Pulled from the NutriVital catalog (per 100g) — click any item for full Nutrition Facts.</p>
+              </div>
+              <button
+                type="button"
+                onclick="jumpToHighProteinExplorer()"
+                class="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl transition-colors"
+              >
+                View All &rarr;
+              </button>
+            </div>
+
+            <div id="high-protein-produce-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <!-- Populated dynamically by JS -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="mt-12 border-t border-emerald-100 bg-white/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <div class="flex items-center gap-2 font-semibold text-slate-700">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        NutriVital &mdash; Fresh Nutrition &amp; Wellness Tools
+      </div>
+      <p class="text-center sm:text-right">
+        Nutritional values are approximate USDA averages for raw produce. Informational use only; not medical advice.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ==================== NUTRITION FACTS MODAL ==================== -->
+  <div
+    id="nutrition-modal"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/55 backdrop-blur-sm transition-opacity"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-item-name"
+    onclick="handleModalBackdropClick(event)"
+  >
+    <div class="bg-white rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl border border-emerald-100 relative">
+
+      <!-- Modal Header -->
+      <div class="sticky top-0 z-10 bg-white/95 backdrop-blur-md px-6 pt-5 pb-4 border-b border-slate-100 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div id="modal-icon-wrap" class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shrink-0">
+            🥑
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 id="modal-item-name" class="text-xl font-extrabold text-slate-900">Avocado</h2>
+              <span id="modal-category-badge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                Fruit
+              </span>
+            </div>
+            <p id="modal-tagline" class="text-xs text-slate-500 mt-0.5">Creamy, heart-healthy monounsaturated fats</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onclick="closeNutritionModal()"
+          class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors shrink-0"
+          aria-label="Close Nutrition Facts"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-6">
+
+        <!-- Interactive Serving Size Selector -->
+        <div class="bg-emerald-50/70 border border-emerald-200/70 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <label for="serving-slider" class="text-xs font-bold uppercase tracking-wider text-emerald-900">
+              Serving Size
+            </label>
+            <span id="serving-value-badge" class="text-sm font-extrabold text-emerald-700 bg-white px-3 py-1 rounded-xl border border-emerald-200 shadow-sm">
+              100g
+            </span>
+          </div>
+
+          <input
+            id="serving-slider"
+            type="range"
+            min="50"
+            max="300"
+            step="5"
+            value="100"
+            oninput="updateModalServing(this.value)"
+            class="w-full accent-emerald-600 cursor-pointer h-2 bg-emerald-200 rounded-lg"
+          />
+
+          <div class="flex items-center justify-between gap-1.5 flex-wrap">
+            <button type="button" onclick="setServingPreset(50)" class="serving-preset px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-emerald-200/70 hover:bg-emerald-100 transition-colors">50g</button>
+            <button type="button" onclick="setServingPreset(100)" class="serving-preset px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-600 text-white border border-emerald-600 transition-colors">100g</button>
+            <button type="button" onclick="setServingPreset(150)" class="serving-preset px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-emerald-200/70 hover:bg-emerald-100 transition-colors">150g</button>
+            <button type="button" onclick="setServingPreset(200)" class="serving-preset px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-emerald-200/70 hover:bg-emerald-100 transition-colors">200g</button>
+            <button type="button" onclick="setServingPreset(300)" class="serving-preset px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-emerald-200/70 hover:bg-emerald-100 transition-colors">300g</button>
+          </div>
+        </div>
+
+        <!-- Calories & Macronutrient Breakdown -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between bg-slate-900 text-white rounded-2xl px-5 py-4">
+            <div>
+              <span class="block text-xs font-semibold uppercase tracking-wider text-slate-300">Energy</span>
+              <span class="text-xs text-slate-400">Dynamically scaled</span>
+            </div>
+            <div class="text-right">
+              <span id="modal-calories" class="text-3xl font-extrabold tracking-tight">160</span>
+              <span class="text-sm font-semibold text-emerald-400 ml-1">kcal</span>
+            </div>
+          </div>
+
+          <!-- 5 Macro Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+            <div class="bg-emerald-50/70 border border-emerald-100 rounded-xl p-3 text-center">
+              <span class="block text-[11px] font-semibold text-slate-500">Protein</span>
+              <span id="modal-protein" class="block text-base font-extrabold text-emerald-700 mt-0.5">2.0g</span>
+            </div>
+            <div class="bg-amber-50/70 border border-amber-100 rounded-xl p-3 text-center">
+              <span class="block text-[11px] font-semibold text-slate-500">Carbs</span>
+              <span id="modal-carbs" class="block text-base font-extrabold text-amber-700 mt-0.5">8.5g</span>
+            </div>
+            <div class="bg-teal-50/70 border border-teal-100 rounded-xl p-3 text-center">
+              <span class="block text-[11px] font-semibold text-slate-500">Fiber</span>
+              <span id="modal-fiber" class="block text-base font-extrabold text-teal-700 mt-0.5">6.7g</span>
+            </div>
+            <div class="bg-rose-50/60 border border-rose-100 rounded-xl p-3 text-center">
+              <span class="block text-[11px] font-semibold text-slate-500">Sugars</span>
+              <span id="modal-sugars" class="block text-base font-extrabold text-rose-700 mt-0.5">0.7g</span>
+            </div>
+            <div class="col-span-2 sm:col-span-1 bg-orange-50/70 border border-orange-100 rounded-xl p-3 text-center">
+              <span class="block text-[11px] font-semibold text-slate-500">Total Fat</span>
+              <span id="modal-fat" class="block text-base font-extrabold text-orange-700 mt-0.5">14.7g</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Vitamins & Minerals -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">
+            Key Vitamins &amp; Minerals
+          </h3>
+          <div id="modal-micros" class="grid grid-cols-2 gap-2.5">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Top Health Benefits -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">
+            Top Health Benefits
+          </h3>
+          <ul id="modal-benefits" class="space-y-2">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== APPLICATION JAVASCRIPT ==================== -->
+  <script>
+    // =========================================================================
+    // 1. CUSTOM INLINE SVG ICONS (For produce items without universal emojis)
+    // =========================================================================
+    const CUSTOM_SVGS = {
+      pomegranate: `<svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M20 9L24 5L28 9L26 12H22L20 9Z" fill="#B91C1C"/>
+        <circle cx="24" cy="27" r="15" fill="#DC2626"/>
+        <path d="M24 14C17.5 14 13 19 13 26C13 33 18 38 24 38C20 35 18 31 18 26C18 20.5 20.5 16.5 24 14Z" fill="#EF4444" opacity="0.7"/>
+        <circle cx="27" cy="24" r="2" fill="#FECACA"/>
+        <circle cx="31" cy="29" r="2" fill="#FECACA"/>
+        <circle cx="25" cy="31" r="1.8" fill="#FECACA"/>
+      </svg>`,
+      cauliflower: `<svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M12 31C10 36 14 41 24 41C34 41 38 36 36 31C33 34 29 36 24 36C19 36 15 34 12 31Z" fill="#16A34A"/>
+        <circle cx="17" cy="23" r="7" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+        <circle cx="31" cy="23" r="7" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+        <circle cx="24" cy="18" r="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+        <circle cx="24" cy="26" r="7" fill="#F1F5F9"/>
+      </svg>`,
+      beetroot: `<svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 16C20 9 14 7 12 10C15 13 18 15 22 17" fill="#15803D"/>
+        <path d="M24 16C28 9 34 7 36 10C33 13 30 15 26 17" fill="#16A34A"/>
+        <path d="M24 16C24 9 24 6 24 6" stroke="#166534" stroke-width="3" stroke-linecap="round"/>
+        <path d="M24 15C16 15 12 21 13 28C14 34 21 38 24 42C27 38 34 34 35 28C36 21 32 15 24 15Z" fill="#9F1239"/>
+        <ellipse cx="20" cy="24" rx="2.5" ry="4.5" fill="#E11D48" opacity="0.5"/>
+      </svg>`,
+      papaya: `<svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <ellipse cx="24" cy="25" rx="12" ry="16" transform="rotate(-18 24 25)" fill="#F97316"/>
+        <ellipse cx="24" cy="25" rx="7" ry="11" transform="rotate(-18 24 25)" fill="#FDBA74"/>
+        <circle cx="22" cy="21" r="1.5" fill="#1E293B"/>
+        <circle cx="25" cy="24" r="1.5" fill="#1E293B"/>
+        <circle cx="23" cy="27" r="1.5" fill="#1E293B"/>
+        <circle cx="26" cy="29" r="1.5" fill="#1E293B"/>
+      </svg>`,
+      edamame: `<svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M10 32C12 20 22 12 36 11C39 11 40 14 38 17C35 24 26 35 14 37C10 38 9 35 10 32Z" fill="#22C55E"/>
+        <circle cx="17" cy="30" r="4" fill="#86EFAC"/>
+        <circle cx="24" cy="24" r="4.2" fill="#86EFAC"/>
+        <circle cx="31" cy="18" r="3.8" fill="#86EFAC"/>
+      </svg>`,
+      peas: `<svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M9 28C14 19 25 14 39 17C37 26 27 35 12 34C9 34 8 30 9 28Z" fill="#16A34A"/>
+        <circle cx="16" cy="29" r="3.6" fill="#4ADE80"/>
+        <circle cx="24" cy="26" r="3.8" fill="#4ADE80"/>
+        <circle cx="32" cy="22" r="3.5" fill="#4ADE80"/>
+      </svg>`
+    };
+
+    // =========================================================================
+    // 2. PRODUCE DATABASE (24 Fruits & Vegetables, Values per 100g Raw)
+    // =========================================================================
+    const PRODUCE_DATA = [
+      {
+        id: 'avocado',
+        name: 'Avocado',
+        category: 'Fruit',
+        emoji: '🥑',
+        bgClass: 'bg-lime-100/80',
+        tagline: 'Creamy, heart-healthy monounsaturated fats',
+        calories: 160,
+        protein: 2.0,
+        carbs: 8.5,
+        fiber: 6.7,
+        sugars: 0.7,
+        fat: 14.7,
+        micros: [
+          { name: 'Potassium', amount: 485, unit: 'mg' },
+          { name: 'Folate (B9)', amount: 81, unit: 'mcg' },
+          { name: 'Vitamin K', amount: 21, unit: 'mcg' },
+          { name: 'Vitamin C', amount: 10, unit: 'mg' }
+        ],
+        benefits: [
+          'Rich in oleic acid that supports healthy cholesterol levels.',
+          'High dietary fiber promotes gut health and steady satiety.',
+          'Enhances absorption of fat-soluble vitamins (A, D, E, K).'
+        ]
+      },
+      {
+        id: 'spinach',
+        name: 'Spinach',
+        category: 'Vegetable',
+        emoji: '🥬',
+        bgClass: 'bg-emerald-100/80',
+        tagline: 'Iron-rich leafy green powerhouse',
+        calories: 23,
+        protein: 2.9,
+        carbs: 3.6,
+        fiber: 2.2,
+        sugars: 0.4,
+        fat: 0.4,
+        micros: [
+          { name: 'Vitamin A', amount: 469, unit: 'mcg' },
+          { name: 'Folate (B9)', amount: 194, unit: 'mcg' },
+          { name: 'Potassium', amount: 558, unit: 'mg' },
+          { name: 'Iron', amount: 2.7, unit: 'mg' }
+        ],
+        benefits: [
+          'Packed with lutein and zeaxanthin for long-term eye protection.',
+          'Naturally occurring nitrates help support healthy blood flow.',
+          'Very low in calories with impressive protein-per-calorie density.'
+        ]
+      },
+      {
+        id: 'broccoli',
+        name: 'Broccoli',
+        category: 'Vegetable',
+        emoji: '🥦',
+        bgClass: 'bg-green-100/80',
+        tagline: 'Cruciferous staple loaded with Vitamin C',
+        calories: 34,
+        protein: 2.8,
+        carbs: 6.6,
+        fiber: 2.6,
+        sugars: 1.7,
+        fat: 0.4,
+        micros: [
+          { name: 'Vitamin C', amount: 89.2, unit: 'mg' },
+          { name: 'Vitamin K', amount: 102, unit: 'mcg' },
+          { name: 'Folate (B9)', amount: 63, unit: 'mcg' },
+          { name: 'Potassium', amount: 316, unit: 'mg' }
+        ],
+        benefits: [
+          'Contains sulforaphane, a potent antioxidant compound.',
+          'Provides nearly a full day’s Vitamin C per 100g serving.',
+          'Supports bone strength with high Vitamin K content.'
+        ]
+      },
+      {
+        id: 'sweet-potato',
+        name: 'Sweet Potato',
+        category: 'Vegetable',
+        emoji: '🍠',
+        bgClass: 'bg-orange-100/80',
+        tagline: 'Slow-digesting complex carbs & beta-carotene',
+        calories: 86,
+        protein: 1.6,
+        carbs: 20.1,
+        fiber: 3.0,
+        sugars: 4.2,
+        fat: 0.1,
+        micros: [
+          { name: 'Vitamin A', amount: 709, unit: 'mcg' },
+          { name: 'Potassium', amount: 337, unit: 'mg' },
+          { name: 'Vitamin C', amount: 2.4, unit: 'mg' },
+          { name: 'Magnesium', amount: 25, unit: 'mg' }
+        ],
+        benefits: [
+          'Exceptional source of beta-carotene for vision and immune health.',
+          'Provides sustained energy ideal for active lifestyles.',
+          'Supports digestive regularity with soluble and insoluble fiber.'
+        ]
+      },
+      {
+        id: 'banana',
+        name: 'Banana',
+        category: 'Fruit',
+        emoji: '🍌',
+        bgClass: 'bg-yellow-100/80',
+        tagline: 'Portable potassium & preworkout fuel',
+        calories: 89,
+        protein: 1.1,
+        carbs: 22.8,
+        fiber: 2.6,
+        sugars: 12.2,
+        fat: 0.3,
+        micros: [
+          { name: 'Potassium', amount: 358, unit: 'mg' },
+          { name: 'Vitamin B6', amount: 0.4, unit: 'mg' },
+          { name: 'Vitamin C', amount: 8.7, unit: 'mg' },
+          { name: 'Magnesium', amount: 27, unit: 'mg' }
+        ],
+        benefits: [
+          'Replenishes electrolytes and supports muscle contraction.',
+          'Contains prebiotic resistant starch that feeds beneficial gut flora.',
+          'Gentle on digestion and provides quick natural carbohydrates.'
+        ]
+      },
+      {
+        id: 'blueberries',
+        name: 'Blueberries',
+        category: 'Fruit',
+        emoji: '🫐',
+        bgClass: 'bg-indigo-100/80',
+        tagline: 'Antioxidant-dense anthocyanin berries',
+        calories: 57,
+        protein: 0.7,
+        carbs: 14.5,
+        fiber: 2.4,
+        sugars: 10.0,
+        fat: 0.3,
+        micros: [
+          { name: 'Vitamin K', amount: 19.3, unit: 'mcg' },
+          { name: 'Vitamin C', amount: 9.7, unit: 'mg' },
+          { name: 'Manganese', amount: 0.3, unit: 'mg' },
+          { name: 'Potassium', amount: 77, unit: 'mg' }
+        ],
+        benefits: [
+          'High anthocyanin levels help combat oxidative stress.',
+          'Associated with improved memory and cognitive aging support.',
+          'Low glycemic impact compared to many sweet fruits.'
+        ]
+      },
+      {
+        id: 'apple',
+        name: 'Apple',
+        category: 'Fruit',
+        emoji: '🍎',
+        bgClass: 'bg-red-100/80',
+        tagline: 'Crisp pectin fiber & everyday polyphenols',
+        calories: 52,
+        protein: 0.3,
+        carbs: 13.8,
+        fiber: 2.4,
+        sugars: 10.4,
+        fat: 0.2,
+        micros: [
+          { name: 'Potassium', amount: 107, unit: 'mg' },
+          { name: 'Vitamin C', amount: 4.6, unit: 'mg' },
+          { name: 'Vitamin K', amount: 2.2, unit: 'mcg' },
+          { name: 'Folate (B9)', amount: 3, unit: 'mcg' }
+        ],
+        benefits: [
+          'Rich in pectin, a soluble fiber that supports heart and gut health.',
+          'Apple skin contains quercetin, an anti-inflammatory flavonoid.',
+          'High water and fiber content makes it a filling, low-calorie snack.'
+        ]
+      },
+      {
+        id: 'mango',
+        name: 'Mango',
+        category: 'Fruit',
+        emoji: '🥭',
+        bgClass: 'bg-amber-100/80',
+        tagline: 'Tropical immunity booster with Vitamin C & A',
+        calories: 60,
+        protein: 0.8,
+        carbs: 15.0,
+        fiber: 1.6,
+        sugars: 13.7,
+        fat: 0.4,
+        micros: [
+          { name: 'Vitamin C', amount: 36.4, unit: 'mg' },
+          { name: 'Vitamin A', amount: 54, unit: 'mcg' },
+          { name: 'Folate (B9)', amount: 43, unit: 'mcg' },
+          { name: 'Potassium', amount: 168, unit: 'mg' }
+        ],
+        benefits: [
+          'Supplies mangiferin and carotenoids for cellular protection.',
+          'Contains natural amylase enzymes that assist carbohydrate digestion.',
+          'Supports radiant skin through collagen-building Vitamin C.'
+        ]
+      },
+      {
+        id: 'pomegranate',
+        name: 'Pomegranate',
+        category: 'Fruit',
+        svg: CUSTOM_SVGS.pomegranate,
+        bgClass: 'bg-rose-100/80',
+        tagline: 'Jewel-like arils packed with polyphenols',
+        calories: 83,
+        protein: 1.7,
+        carbs: 18.7,
+        fiber: 4.0,
+        sugars: 13.7,
+        fat: 1.2,
+        micros: [
+          { name: 'Potassium', amount: 236, unit: 'mg' },
+          { name: 'Folate (B9)', amount: 38, unit: 'mcg' },
+          { name: 'Vitamin K', amount: 16.4, unit: 'mcg' },
+          { name: 'Vitamin C', amount: 10.2, unit: 'mg' }
+        ],
+        benefits: [
+          'Punicalagins deliver strong antioxidant and vascular benefits.',
+          'Crunchy edible seeds contribute 4g of fiber per 100g.',
+          'May help reduce exercise-induced muscle soreness.'
+        ]
+      },
+      {
+        id: 'kale',
+        name: 'Kale',
+        category: 'Vegetable',
+        emoji: '🌿',
+        bgClass: 'bg-emerald-100/90',
+        tagline: 'Nutrient-dense supergreen rich in Vitamin K',
+        calories: 35,
+        protein: 2.9,
+        carbs: 4.4,
+        fiber: 4.1,
+        sugars: 0.8,
+        fat: 1.5,
+        micros: [
+          { name: 'Vitamin K', amount: 390, unit: 'mcg' },
+          { name: 'Vitamin C', amount: 93.4, unit: 'mg' },
+          { name: 'Calcium', amount: 254, unit: 'mg' },
+          { name: 'Vitamin A', amount: 241, unit: 'mcg' }
+        ],
+        benefits: [
+          'One of the richest plant sources of bioavailable calcium and Vitamin K.',
+          'High fiber and low net carbs support metabolic health.',
+          'Loaded with kaempferol and quercetin antioxidants.'
+        ]
+      },
+      {
+        id: 'carrot',
+        name: 'Carrot',
+        category: 'Vegetable',
+        emoji: '🥕',
+        bgClass: 'bg-orange-100/80',
+        tagline: 'Crunchy beta-carotene classic for eye health',
+        calories: 41,
+        protein: 0.9,
+        carbs: 9.6,
+        fiber: 2.8,
+        sugars: 4.7,
+        fat: 0.2,
+        micros: [
+          { name: 'Vitamin A', amount: 835, unit: 'mcg' },
+          { name: 'Potassium', amount: 320, unit: 'mg' },
+          { name: 'Vitamin K', amount: 13.2, unit: 'mcg' },
+          { name: 'Vitamin C', amount: 5.9, unit: 'mg' }
+        ],
+        benefits: [
+          'Over 90% of daily Vitamin A needs in a single 100g serving.',
+          'Supports healthy night vision and mucosal immunity.',
+          'Versatile low-calorie crunch that pairs well with healthy dips.'
+        ]
+      },
+      {
+        id: 'bell-pepper',
+        name: 'Bell Pepper',
+        category: 'Vegetable',
+        emoji: '🫑',
+        bgClass: 'bg-red-100/70',
+        tagline: 'Sweet, crisp & bursting with Vitamin C',
+        calories: 31,
+        protein: 1.0,
+        carbs: 6.0,
+        fiber: 2.1,
+        sugars: 4.2,
+        fat: 0.3,
+        micros: [
+          { name: 'Vitamin C', amount: 128, unit: 'mg' },
+          { name: 'Vitamin A', amount: 157, unit: 'mcg' },
+          { name: 'Folate (B9)', amount: 46, unit: 'mcg' },
+          { name: 'Potassium', amount: 211, unit: 'mg' }
+        ],
+        benefits: [
+          'Contains more Vitamin C per gram than oranges.',
+          'Enhances plant-based iron absorption when eaten with greens or legumes.',
+          'Rich in capsanthin and lutein for eye and skin wellness.'
+        ]
+      },
+      {
+        id: 'tomato',
+        name: 'Tomato',
+        category: 'Vegetable',
+        emoji: '🍅',
+        bgClass: 'bg-rose-100/80',
+        tagline: 'Juicy lycopene source for heart health',
+        calories: 18,
+        protein: 0.9,
+        carbs: 3.9,
+        fiber: 1.2,
+        sugars: 2.6,
+        fat: 0.2,
+        micros: [
+          { name: 'Potassium', amount: 237, unit: 'mg' },
+          { name: 'Vitamin C', amount: 13.7, unit: 'mg' },
+          { name: 'Vitamin A', amount: 42, unit: 'mcg' },
+          { name: 'Vitamin K', amount: 7.9, unit: 'mcg' }
+        ],
+        benefits: [
+          'Primary dietary source of lycopene, linked to cardiovascular protection.',
+          '95% water content aids daily hydration with minimal calories.',
+          'Cooking with olive oil significantly boosts lycopene bioavailability.'
+        ]
+      },
+      {
+        id: 'orange',
+        name: 'Orange',
+        category: 'Fruit',
+        emoji: '🍊',
+        bgClass: 'bg-amber-100/80',
+        tagline: 'Refreshing citrus classic for immune defense',
+        calories: 47,
+        protein: 0.9,
+        carbs: 11.8,
+        fiber: 2.4,
+        sugars: 9.4,
+        fat: 0.1,
+        micros: [
+          { name: 'Vitamin C', amount: 53.2, unit: 'mg' },
+          { name: 'Potassium', amount: 181, unit: 'mg' },
+          { name: 'Folate (B9)', amount: 30, unit: 'mcg' },
+          { name: 'Calcium', amount: 40, unit: 'mg' }
+        ],
+        benefits: [
+          'Delivers hesperidin flavonoids that support vascular flexibility.',
+          'Whole segments provide fiber that slows natural sugar absorption.',
+          'Citric acid helps support kidney health and mineral uptake.'
+        ]
+      },
+      {
+        id: 'strawberry',
+        name: 'Strawberry',
+        category: 'Fruit',
+        emoji: '🍓',
+        bgClass: 'bg-pink-100/80',
+        tagline: 'Low-calorie sweet berries full of Vitamin C',
+        calories: 32,
+        protein: 0.7,
+        carbs: 7.7,
+        fiber: 2.0,
+        sugars: 4.9,
+        fat: 0.3,
+        micros: [
+          { name: 'Vitamin C', amount: 58.8, unit: 'mg' },
+          { name: 'Potassium', amount: 153, unit: 'mg' },
+          { name: 'Folate (B9)', amount: 24, unit: 'mcg' },
+          { name: 'Manganese', amount: 0.4, unit: 'mg' }
+        ],
+        benefits: [
+          'Low in sugar and calories while satisfying sweet cravings.',
+          'Rich in ellagic acid and anthocyanins for cardiovascular wellness.',
+          'Supports collagen synthesis for healthy skin and joints.'
+        ]
+      },
+      {
+        id: 'watermelon',
+        name: 'Watermelon',
+        category: 'Fruit',
+        emoji: '🍉',
+        bgClass: 'bg-rose-100/70',
+        tagline: 'Ultra-hydrating summer fruit with L-citrulline',
+        calories: 30,
+        protein: 0.6,
+        carbs: 7.6,
+        fiber: 0.4,
+        sugars: 6.2,
+        fat: 0.2,
+        micros: [
+          { name: 'Potassium', amount: 112, unit: 'mg' },
+          { name: 'Vitamin A', amount: 28, unit: 'mcg' },
+          { name: 'Vitamin C', amount: 8.1, unit: 'mg' },
+          { name: 'Magnesium', amount: 10, unit: 'mg' }
+        ],
+        benefits: [
+          '92% water content makes it ideal for warm-weather hydration.',
+          'Contains L-citrulline, an amino acid that aids exercise recovery.',
+          'Provides lycopene for antioxidant cellular protection.'
+        ]
+      },
+      {
+        id: 'cucumber',
+        name: 'Cucumber',
+        category: 'Vegetable',
+        emoji: '🥒',
+        bgClass: 'bg-teal-100/70',
+        tagline: 'Crisp, cooling & 96% pure hydration',
+        calories: 15,
+        protein: 0.7,
+        carbs: 3.6,
+        fiber: 0.5,
+        sugars: 1.7,
+        fat: 0.1,
+        micros: [
+          { name: 'Potassium', amount: 147, unit: 'mg' },
+          { name: 'Vitamin K', amount: 16.4, unit: 'mcg' },
+          { name: 'Magnesium', amount: 13, unit: 'mg' },
+          { name: 'Vitamin C', amount: 2.8, unit: 'mg' }
+        ],
+        benefits: [
+          'One of the lowest-calorie vegetables for high-volume meals.',
+          'Skin supplies silica and fiber for skin and digestive support.',
+          'Provides refreshing electrolytes like potassium and magnesium.'
+        ]
+      },
+      {
+        id: 'cauliflower',
+        name: 'Cauliflower',
+        category: 'Vegetable',
+        svg: CUSTOM_SVGS.cauliflower,
+        bgClass: 'bg-slate-100',
+        tagline: 'Versatile low-carb cruciferous favorite',
+        calories: 25,
+        protein: 1.9,
+        carbs: 5.0,
+        fiber: 2.0,
+        sugars: 1.9,
+        fat: 0.3,
+        micros: [
+          { name: 'Vitamin C', amount: 48.2, unit: 'mg' },
+          { name: 'Potassium', amount: 299, unit: 'mg' },
+          { name: 'Folate (B9)', amount: 57, unit: 'mcg' },
+          { name: 'Vitamin K', amount: 15.5, unit: 'mcg' }
+        ],
+        benefits: [
+          'Great source of choline, an essential nutrient for brain function.',
+          'Glucosinolates support natural cellular detoxification pathways.',
+          'Easily swaps for higher-calorie grains like rice or mash.'
+        ]
+      },
+      {
+        id: 'green-peas',
+        name: 'Green Peas',
+        category: 'Vegetable',
+        svg: CUSTOM_SVGS.peas,
+        bgClass: 'bg-emerald-100/80',
+        tagline: 'Sweet, protein-packed legume vegetable',
+        calories: 81,
+        protein: 5.4,
+        carbs: 14.5,
+        fiber: 5.7,
+        sugars: 5.7,
+        fat: 0.4,
+        micros: [
+          { name: 'Vitamin C', amount: 40, unit: 'mg' },
+          { name: 'Potassium', amount: 244, unit: 'mg' },
+          { name: 'Folate (B9)', amount: 65, unit: 'mcg' },
+          { name: 'Iron', amount: 1.5, unit: 'mg' }
+        ],
+        benefits: [
+          'One of the highest-protein and highest-fiber everyday vegetables.',
+          'Slow-release energy helps keep blood sugar steady after meals.',
+          'Supplies plant-based iron alongside Vitamin C to aid absorption.'
+        ]
+      },
+      {
+        id: 'beetroot',
+        name: 'Beetroot',
+        category: 'Vegetable',
+        svg: CUSTOM_SVGS.beetroot,
+        bgClass: 'bg-fuchsia-100/80',
+        tagline: 'Earthy ruby root for stamina & blood flow',
+        calories: 43,
+        protein: 1.6,
+        carbs: 9.6,
+        fiber: 2.8,
+        sugars: 6.8,
+        fat: 0.2,
+        micros: [
+          { name: 'Folate (B9)', amount: 109, unit: 'mcg' },
+          { name: 'Potassium', amount: 325, unit: 'mg' },
+          { name: 'Vitamin C', amount: 4.9, unit: 'mg' },
+          { name: 'Iron', amount: 0.8, unit: 'mg' }
+        ],
+        benefits: [
+          'Rich in dietary nitrates that boost nitric oxide and endurance.',
+          'Betalain pigments provide natural anti-inflammatory properties.',
+          'Excellent source of folate for healthy red blood cell formation.'
+        ]
+      },
+      {
+        id: 'edamame',
+        name: 'Edamame',
+        category: 'Vegetable',
+        svg: CUSTOM_SVGS.edamame,
+        bgClass: 'bg-lime-100/80',
+        tagline: 'Complete plant protein powerhouse',
+        calories: 121,
+        protein: 11.9,
+        carbs: 8.9,
+        fiber: 5.2,
+        sugars: 2.2,
+        fat: 5.2,
+        micros: [
+          { name: 'Folate (B9)', amount: 311, unit: 'mcg' },
+          { name: 'Potassium', amount: 436, unit: 'mg' },
+          { name: 'Calcium', amount: 63, unit: 'mg' },
+          { name: 'Iron', amount: 2.3, unit: 'mg' }
+        ],
+        benefits: [
+          'Provides all nine essential amino acids as a complete plant protein.',
+          'High in fiber and isoflavones that support cardiovascular health.',
+          'Ideal snack or salad topper for hitting daily protein targets.'
+        ]
+      },
+      {
+        id: 'kiwi',
+        name: 'Kiwi',
+        category: 'Fruit',
+        emoji: '🥝',
+        bgClass: 'bg-lime-100/80',
+        tagline: 'Tangy green fruit with digestive enzymes',
+        calories: 61,
+        protein: 1.1,
+        carbs: 14.7,
+        fiber: 3.0,
+        sugars: 9.0,
+        fat: 0.5,
+        micros: [
+          { name: 'Vitamin C', amount: 92.7, unit: 'mg' },
+          { name: 'Potassium', amount: 312, unit: 'mg' },
+          { name: 'Vitamin K', amount: 40.3, unit: 'mcg' },
+          { name: 'Folate (B9)', amount: 25, unit: 'mcg' }
+        ],
+        benefits: [
+          'Contains actinidin, an enzyme that helps break down dietary protein.',
+          'Delivers over 100% of daily Vitamin C needs in just 100g.',
+          'Natural serotonin and antioxidants may support restful sleep.'
+        ]
+      },
+      {
+        id: 'papaya',
+        name: 'Papaya',
+        category: 'Fruit',
+        svg: CUSTOM_SVGS.papaya,
+        bgClass: 'bg-orange-100/80',
+        tagline: 'Soothing tropical fruit with papain enzyme',
+        calories: 43,
+        protein: 0.5,
+        carbs: 10.8,
+        fiber: 1.7,
+        sugars: 7.8,
+        fat: 0.3,
+        micros: [
+          { name: 'Vitamin C', amount: 60.9, unit: 'mg' },
+          { name: 'Potassium', amount: 182, unit: 'mg' },
+          { name: 'Vitamin A', amount: 47, unit: 'mcg' },
+          { name: 'Folate (B9)', amount: 37, unit: 'mcg' }
+        ],
+        benefits: [
+          'Papain enzyme supports comfortable protein digestion.',
+          'High in beta-cryptoxanthin and lycopene for glowing skin.',
+          'Light, refreshing, and gentle on sensitive stomachs.'
+        ]
+      },
+      {
+        id: 'mushroom',
+        name: 'Mushroom',
+        category: 'Vegetable',
+        emoji: '🍄',
+        bgClass: 'bg-stone-100',
+        tagline: 'Savory umami fungi rich in B-vitamins & selenium',
+        calories: 22,
+        protein: 3.1,
+        carbs: 3.3,
+        fiber: 1.0,
+        sugars: 2.0,
+        fat: 0.3,
+        micros: [
+          { name: 'Potassium', amount: 318, unit: 'mg' },
+          { name: 'Niacin (B3)', amount: 3.6, unit: 'mg' },
+          { name: 'Selenium', amount: 9.3, unit: 'mcg' },
+          { name: 'Iron', amount: 0.5, unit: 'mg' }
+        ],
+        benefits: [
+          'Delivers 3.1g protein for only 22 calories per 100g.',
+          'Contains beta-glucans that help modulate healthy immune response.',
+          'Rich in selenium and ergothioneine, unique cellular antioxidants.'
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 3. APPLICATION STATE
+    // =========================================================================
+    const appState = {
+      activeTab: 'explorer',
+      categoryFilter: 'All',
+      activeModalItem: null,
+      servingGrams: 100,
+      bmiUnit: 'metric',
+      proteinUnit: 'kg',
+      proteinGoal: 'maintain'
+    };
+
+    // =========================================================================
+    // 4. NAVIGATION & TAB SWITCHING
+    // =========================================================================
+    function switchTab(tabName) {
+      try {
+        appState.activeTab = tabName;
+        const sections = ['explorer', 'bmi', 'protein'];
+
+        sections.forEach((sec) => {
+          const sectionEl = document.getElementById(`section-${sec}`);
+          const navBtn = document.getElementById(`nav-${sec}`);
+          const isActive = sec === tabName;
+
+          if (sectionEl) {
+            sectionEl.classList.toggle('hidden', !isActive);
+          }
+
+          if (navBtn) {
+            if (isActive) {
+              navBtn.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
+              navBtn.classList.remove('text-slate-600', 'hover:text-slate-900');
+              navBtn.setAttribute('aria-current', 'page');
+            } else {
+              navBtn.classList.remove('bg-white', 'text-emerald-700', 'shadow-sm');
+              navBtn.classList.add('text-slate-600', 'hover:text-slate-900');
+              navBtn.removeAttribute('aria-current');
+            }
+          }
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        console.error('Error switching tabs:', err);
+      }
+    }
+
+    // =========================================================================
+    // 5. SECTION 1: FRUITS & VEGETABLES EXPLORER
+    // =========================================================================
+    function renderIconHTML(item) {
+      return item.svg ? item.svg : `<span>${item.emoji}</span>`;
+    }
+
+    function setCategoryFilter(category) {
+      appState.categoryFilter = category;
+      document.querySelectorAll('.category-pill').forEach((btn) => {
+        const isSelected = btn.getAttribute('data-category') === category;
+        if (isSelected) {
+          btn.classList.add('bg-emerald-600', 'text-white', 'shadow-sm');
+          btn.classList.remove('bg-slate-100', 'text-slate-600', 'hover:bg-slate-200/80');
+        } else {
+          btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm');
+          btn.classList.add('bg-slate-100', 'text-slate-600', 'hover:bg-slate-200/80');
+        }
+      });
+      renderProduceGrid();
+    }
+
+    function clearSearch() {
+      const searchInput = document.getElementById('explorer-search');
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      renderProduceGrid();
+    }
+
+    function resetExplorerFilters() {
+      const searchInput = document.getElementById('explorer-search');
+      const sortSelect = document.getElementById('explorer-sort');
+      if (searchInput) searchInput.value = '';
+      if (sortSelect) sortSelect.value = 'az';
+      setCategoryFilter('All');
+    }
+
+    function renderProduceGrid() {
+      try {
+        const searchInput = document.getElementById('explorer-search');
+        const clearBtn = document.getElementById('clear-search-btn');
+        const sortSelect = document.getElementById('explorer-sort');
+        const grid = document.getElementById('produce-grid');
+        const emptyState = document.getElementById('explorer-empty');
+        const summaryEl = document.getElementById('results-summary');
+
+        const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+        const sortBy = sortSelect ? sortSelect.value : 'az';
+
+        if (clearBtn) {
+          clearBtn.classList.toggle('hidden', query.length === 0);
+        }
+
+        // Filter by category and search query
+        let filtered = PRODUCE_DATA.filter((item) => {
+          const matchesCategory =
+            appState.categoryFilter === 'All' || item.category === appState.categoryFilter;
+          const matchesQuery =
+            item.name.toLowerCase().includes(query) ||
+            item.tagline.toLowerCase().includes(query);
+          return matchesCategory && matchesQuery;
+        });
+
+        // Apply sorting
+        filtered.sort((a, b) => {
+          if (sortBy === 'low-cal') return a.calories - b.calories;
+          if (sortBy === 'high-protein') return b.protein - a.protein;
+          if (sortBy === 'high-fiber') return b.fiber - a.fiber;
+          return a.name.localeCompare(b.name);
+        });
+
+        // Update summary text
+        if (summaryEl) {
+          summaryEl.textContent = `Showing ${filtered.length} of ${PRODUCE_DATA.length} items`;
+        }
+
+        // Handle empty results
+        if (filtered.length === 0) {
+          grid.innerHTML = '';
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        emptyState.classList.add('hidden');
+
+        // Build cards markup
+        grid.innerHTML = filtered
+          .map((item) => {
+            const isFruit = item.category === 'Fruit';
+            const badgeStyle = isFruit
+              ? 'bg-amber-50 text-amber-700 border-amber-200/70'
+              : 'bg-emerald-50 text-emerald-700 border-emerald-200/70';
+
+            return `
+              <article
+                onclick="openNutritionModal('${item.id}')"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNutritionModal('${item.id}');}"
+                tabindex="0"
+                role="button"
+                aria-label="View nutrition facts for ${item.name}"
+                class="group bg-white rounded-2xl p-5 border border-emerald-100/90 shadow-sm hover:shadow-md hover:border-emerald-300 hover:-translate-y-1 transition-all duration-200 cursor-pointer flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              >
+                <div>
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="w-14 h-14 rounded-2xl ${item.bgClass} flex items-center justify-center text-3xl group-hover:scale-105 transition-transform shrink-0">
+                      ${renderIconHTML(item)}
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${badgeStyle}">
+                      ${item.category}
+                    </span>
+                  </div>
+
+                  <div class="mt-4">
+                    <h3 class="text-base font-extrabold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                      ${item.name}
+                    </h3>
+                    <div class="flex items-baseline gap-1 mt-1">
+                      <span class="text-2xl font-extrabold text-slate-900">${item.calories}</span>
+                      <span class="text-xs font-semibold text-slate-400">kcal / 100g</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Quick Macro Pills -->
+                <div class="grid grid-cols-3 gap-1.5 mt-4 pt-3.5 border-t border-slate-100">
+                  <div class="bg-emerald-50/70 rounded-xl py-1.5 px-2 text-center">
+                    <span class="block text-[10px] font-semibold text-slate-500 uppercase">Protein</span>
+                    <span class="block text-xs font-extrabold text-emerald-700">${item.protein.toFixed(1)}g</span>
+                  </div>
+                  <div class="bg-amber-50/70 rounded-xl py-1.5 px-2 text-center">
+                    <span class="block text-[10px] font-semibold text-slate-500 uppercase">Carbs</span>
+                    <span class="block text-xs font-extrabold text-amber-700">${item.carbs.toFixed(1)}g</span>
+                  </div>
+                  <div class="bg-teal-50/70 rounded-xl py-1.5 px-2 text-center">
+                    <span class="block text-[10px] font-semibold text-slate-500 uppercase">Fiber</span>
+                    <span class="block text-xs font-extrabold text-teal-700">${item.fiber.toFixed(1)}g</span>
+                  </div>
+                </div>
+              </article>
+            `;
+          })
+          .join('');
+      } catch (err) {
+        console.error('Error rendering produce grid:', err);
+      }
+    }
+
+    // =========================================================================
+    // 6. NUTRITION FACTS MODAL WITH DYNAMIC SERVING SIZE SCALING
+    // =========================================================================
+    function openNutritionModal(itemId) {
+      const item = PRODUCE_DATA.find((p) => p.id === itemId);
+      if (!item) return;
+
+      appState.activeModalItem = item;
+      appState.servingGrams = 100;
+
+      // Populate static header fields
+      const iconWrap = document.getElementById('modal-icon-wrap');
+      iconWrap.className = `w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shrink-0 ${item.bgClass}`;
+      iconWrap.innerHTML = renderIconHTML(item);
+
+      document.getElementById('modal-item-name').textContent = item.name;
+      document.getElementById('modal-tagline').textContent = item.tagline;
+
+      const catBadge = document.getElementById('modal-category-badge');
+      catBadge.textContent = item.category;
+      catBadge.className =
+        item.category === 'Fruit'
+          ? 'text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800'
+          : 'text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800';
+
+      // Populate health benefits
+      document.getElementById('modal-benefits').innerHTML = item.benefits
+        .map(
+          (benefit) => `
+            <li class="flex items-start gap-2.5 text-sm text-slate-600">
+              <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+              <span>${benefit}</span>
+            </li>
+          `
+        )
+        .join('');
+
+      // Reset slider to 100g and render values
+      document.getElementById('serving-slider').value = 100;
+      updateModalServing(100);
+
+      // Show modal and prevent background scroll
+      const modal = document.getElementById('nutrition-modal');
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function setServingPreset(grams) {
+      document.getElementById('serving-slider').value = grams;
+      updateModalServing(grams);
+    }
+
+    function updateModalServing(gramsValue) {
+      const item = appState.activeModalItem;
+      if (!item) return;
+
+      const grams = Number(gramsValue) || 100;
+      appState.servingGrams = grams;
+      const factor = grams / 100;
+
+      // Update serving badge & preset button styling
+      document.getElementById('serving-value-badge').textContent = `${grams}g`;
+      document.querySelectorAll('.serving-preset').forEach((btn) => {
+        const presetVal = parseInt(btn.textContent, 10);
+        if (presetVal === grams) {
+          btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+          btn.classList.remove('bg-white', 'text-slate-600', 'border-emerald-200/70');
+        } else {
+          btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+          btn.classList.add('bg-white', 'text-slate-600', 'border-emerald-200/70');
+        }
+      });
+
+      // Scale calories & macros
+      document.getElementById('modal-calories').textContent = Math.round(item.calories * factor);
+      document.getElementById('modal-protein').textContent = `${(item.protein * factor).toFixed(1)}g`;
+      document.getElementById('modal-carbs').textContent = `${(item.carbs * factor).toFixed(1)}g`;
+      document.getElementById('modal-fiber').textContent = `${(item.fiber * factor).toFixed(1)}g`;
+      document.getElementById('modal-sugars').textContent = `${(item.sugars * factor).toFixed(1)}g`;
+      document.getElementById('modal-fat').textContent = `${(item.fat * factor).toFixed(1)}g`;
+
+      // Scale vitamins & minerals
+      document.getElementById('modal-micros').innerHTML = item.micros
+        .map((m) => {
+          const scaled = m.amount * factor;
+          const formatted = scaled >= 10 ? Math.round(scaled) : scaled.toFixed(1);
+          return `
+            <div class="flex items-center justify-between bg-slate-50 border border-slate-200/70 rounded-xl px-3.5 py-2.5">
+              <span class="text-xs font-semibold text-slate-600">${m.name}</span>
+              <span class="text-xs font-extrabold text-slate-900">${formatted} ${m.unit}</span>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function closeNutritionModal() {
+      document.getElementById('nutrition-modal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+      appState.activeModalItem = null;
+    }
+
+    function handleModalBackdropClick(event) {
+      if (event.target.id === 'nutrition-modal') {
+        closeNutritionModal();
+      }
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && appState.activeModalItem) {
+        closeNutritionModal();
+      }
+    });
+
+    // =========================================================================
+    // 7. SECTION 2: BMI CALCULATOR
+    // =========================================================================
+    function setBmiUnit(unit) {
+      if (appState.bmiUnit === unit) return;
+
+      // Convert current values smoothly between Metric and Imperial
+      if (unit === 'imperial') {
+        const cm = parseFloat(document.getElementById('bmi-height-cm').value) || 172;
+        const kg = parseFloat(document.getElementById('bmi-weight-kg').value) || 68;
+        const totalInches = cm / 2.54;
+        const feet = Math.floor(totalInches / 12);
+        const inches = Math.round((totalInches - feet * 12) * 2) / 2;
+        document.getElementById('bmi-height-ft').value = feet;
+        document.getElementById('bmi-height-in').value = inches;
+        document.getElementById('bmi-weight-lbs').value = Math.round(kg * 2.20462 * 2) / 2;
+      } else {
+        const ft = parseFloat(document.getElementById('bmi-height-ft').value) || 5;
+        const inc = parseFloat(document.getElementById('bmi-height-in').value) || 8;
+        const lbs = parseFloat(document.getElementById('bmi-weight-lbs').value) || 150;
+        const cm = Math.round((ft * 12 + inc) * 2.54 * 2) / 2;
+        const kg = Math.round((lbs / 2.20462) * 10) / 10;
+        document.getElementById('bmi-height-cm').value = cm;
+        document.getElementById('bmi-weight-kg').value = kg;
+      }
+
+      appState.bmiUnit = unit;
+      const isMetric = unit === 'metric';
+
+      document.getElementById('bmi-metric-fields').classList.toggle('hidden', !isMetric);
+      document.getElementById('bmi-imperial-fields').classList.toggle('hidden', isMetric);
+
+      const metricBtn = document.getElementById('bmi-unit-metric');
+      const impBtn = document.getElementById('bmi-unit-imperial');
+
+      if (isMetric) {
+        metricBtn.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
+        metricBtn.classList.remove('text-slate-600');
+        impBtn.classList.remove('bg-white', 'text-emerald-700', 'shadow-sm');
+        impBtn.classList.add('text-slate-600');
+      } else {
+        impBtn.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
+        impBtn.classList.remove('text-slate-600');
+        metricBtn.classList.remove('bg-white', 'text-emerald-700', 'shadow-sm');
+        metricBtn.classList.add('text-slate-600');
+      }
+
+      calculateBMI();
+    }
+
+    function calculateBMI() {
+      try {
+        const errorBox = document.getElementById('bmi-error');
+        let heightMeters = 0;
+        let weightKg = 0;
+
+        if (appState.bmiUnit === 'metric') {
+          const cm = parseFloat(document.getElementById('bmi-height-cm').value);
+          const kg = parseFloat(document.getElementById('bmi-weight-kg').value);
+          heightMeters = cm / 100;
+          weightKg = kg;
+        } else {
+          const ft = parseFloat(document.getElementById('bmi-height-ft').value) || 0;
+          const inc = parseFloat(document.getElementById('bmi-height-in').value) || 0;
+          const lbs = parseFloat(document.getElementById('bmi-weight-lbs').value);
+          const totalInches = ft * 12 + inc;
+          heightMeters = totalInches * 0.0254;
+          weightKg = lbs / 2.20462;
+        }
+
+        // Validate positive realistic inputs
+        if (!heightMeters || heightMeters <= 0.4 || !weightKg || weightKg <= 10 || isNaN(heightMeters) || isNaN(weightKg)) {
+          errorBox.classList.remove('hidden');
+          document.getElementById('bmi-score').textContent = '--';
+          document.getElementById('bmi-healthy-range').textContent = '--';
+          return;
+        }
+        errorBox.classList.add('hidden');
+
+        const bmi = weightKg / (heightMeters * heightMeters);
+        const bmiRounded = bmi.toFixed(1);
+
+        // Determine category & styling tokens
+        let category = '';
+        let badgeBg = '';
+        let badgeText = '';
+        let dotBg = '';
+        let labelColor = '';
+
+        if (bmi < 18.5) {
+          category = 'Underweight';
+          badgeBg = 'bg-sky-100';
+          badgeText = 'text-sky-800';
+          dotBg = 'bg-sky-500';
+          labelColor = 'text-sky-700';
+        } else if (bmi < 25) {
+          category = 'Normal Weight';
+          badgeBg = 'bg-emerald-100';
+          badgeText = 'text-emerald-800';
+          dotBg = 'bg-emerald-500';
+          labelColor = 'text-emerald-700';
+        } else if (bmi < 30) {
+          category = 'Overweight';
+          badgeBg = 'bg-amber-100';
+          badgeText = 'text-amber-800';
+          dotBg = 'bg-amber-500';
+          labelColor = 'text-amber-700';
+        } else {
+          category = 'Obese';
+          badgeBg = 'bg-rose-100';
+          badgeText = 'text-rose-800';
+          dotBg = 'bg-rose-500';
+          labelColor = 'text-rose-700';
+        }
+
+        // Update UI displays
+        document.getElementById('bmi-score').textContent = bmiRounded;
+
+        const badgeEl = document.getElementById('bmi-category-badge');
+        badgeEl.className = `inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold ${badgeBg} ${badgeText}`;
+        document.getElementById('bmi-category-dot').className = `w-2.5 h-2.5 rounded-full ${dotBg}`;
+        document.getElementById('bmi-category-text').textContent = category;
+
+        const markerLabel = document.getElementById('bmi-marker-label');
+        markerLabel.className = `font-bold ${labelColor}`;
+        markerLabel.textContent = `${bmiRounded} (${category})`;
+        document.getElementById('bmi-pin-pill').textContent = bmiRounded;
+
+        // Map BMI onto horizontal scale (12 to 42 -> 0% to 100%, clamped to 2%-98%)
+        const clampedBmi = Math.min(42, Math.max(12, bmi));
+        const percent = ((clampedBmi - 12) / (42 - 12)) * 100;
+        const safePercent = Math.min(97, Math.max(3, percent));
+        document.getElementById('bmi-gauge-marker').style.left = `${safePercent}%`;
+
+        // Calculate estimated healthy weight range (BMI 18.5 to 24.9)
+        const minHealthyKg = 18.5 * heightMeters * heightMeters;
+        const maxHealthyKg = 24.9 * heightMeters * heightMeters;
+
+        if (appState.bmiUnit === 'metric') {
+          document.getElementById('bmi-healthy-range').textContent = `${minHealthyKg.toFixed(1)} – ${maxHealthyKg.toFixed(1)} kg`;
+        } else {
+          const minLbs = minHealthyKg * 2.20462;
+          const maxLbs = maxHealthyKg * 2.20462;
+          document.getElementById('bmi-healthy-range').textContent = `${Math.round(minLbs)} – ${Math.round(maxLbs)} lbs`;
+        }
+      } catch (err) {
+        console.error('BMI calculation error:', err);
+      }
+    }
+
+    // =========================================================================
+    // 8. SECTION 3: DAILY PROTEIN CALCULATOR
+    // =========================================================================
+    const PROTEIN_MULTIPLIERS = {
+      sedentary: { min: 0.8, max: 1.0 },
+      light: { min: 1.0, max: 1.2 },
+      moderate: { min: 1.2, max: 1.5 },
+      very: { min: 1.5, max: 1.8 },
+      athlete: { min: 1.7, max: 2.1 }
+    };
+
+    const GOAL_ADJUSTMENTS = {
+      maintain: { minAdd: 0.0, maxAdd: 0.0 },
+      fatloss: { minAdd: 0.3, maxAdd: 0.4 },
+      muscle: { minAdd: 0.35, maxAdd: 0.45 }
+    };
+
+    function setProteinUnit(unit) {
+      if (appState.proteinUnit === unit) return;
+
+      const weightInput = document.getElementById('protein-weight');
+      const currentVal = parseFloat(weightInput.value) || 70;
+
+      if (unit === 'lbs') {
+        weightInput.value = Math.round(currentVal * 2.20462);
+      } else {
+        weightInput.value = Math.round((currentVal / 2.20462) * 2) / 2;
+      }
+
+      appState.proteinUnit = unit;
+      document.getElementById('protein-weight-unit-label').textContent = unit;
+
+      const kgBtn = document.getElementById('protein-unit-kg');
+      const lbsBtn = document.getElementById('protein-unit-lbs');
+
+      if (unit === 'kg') {
+        kgBtn.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
+        kgBtn.classList.remove('text-slate-600');
+        lbsBtn.classList.remove('bg-white', 'text-emerald-700', 'shadow-sm');
+        lbsBtn.classList.add('text-slate-600');
+      } else {
+        lbsBtn.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
+        lbsBtn.classList.remove('text-slate-600');
+        kgBtn.classList.remove('bg-white', 'text-emerald-700', 'shadow-sm');
+        kgBtn.classList.add('text-slate-600');
+      }
+
+      calculateProtein();
+    }
+
+    function setProteinGoal(goal) {
+      appState.proteinGoal = goal;
+      document.querySelectorAll('.goal-btn').forEach((btn) => {
+        const isSelected = btn.getAttribute('data-goal') === goal;
+        if (isSelected) {
+          btn.classList.add('border-emerald-500', 'bg-emerald-50/70');
+          btn.classList.remove('border-slate-200', 'bg-white', 'hover:border-slate-300');
+        } else {
+          btn.classList.remove('border-emerald-500', 'bg-emerald-50/70');
+          btn.classList.add('border-slate-200', 'bg-white', 'hover:border-slate-300');
+        }
+      });
+      calculateProtein();
+    }
+
+    function calculateProtein() {
+      try {
+        const rawWeight = parseFloat(document.getElementById('protein-weight').value);
+        const activity = document.getElementById('protein-activity').value;
+        const errorBox = document.getElementById('protein-error');
+
+        if (!rawWeight || rawWeight <= 0 || isNaN(rawWeight)) {
+          errorBox.classList.remove('hidden');
+          document.getElementById('protein-optimal').textContent = '--';
+          document.getElementById('protein-range').textContent = '--';
+          document.getElementById('protein-3-meals').textContent = '--';
+          document.getElementById('protein-4-meals').textContent = '--';
+          return;
+        }
+        errorBox.classList.add('hidden');
+
+        const weightKg = appState.proteinUnit === 'kg' ? rawWeight : rawWeight / 2.20462;
+        const base = PROTEIN_MULTIPLIERS[activity] || PROTEIN_MULTIPLIERS.moderate;
+        const adj = GOAL_ADJUSTMENTS[appState.proteinGoal] || GOAL_ADJUSTMENTS.maintain;
+
+        // Evidence-based caps (realistic upper bound 2.4 g/kg for athletes on a cut/bulk)
+        const minMult = Math.min(2.2, +(base.min + adj.minAdd).toFixed(2));
+        const maxMult = Math.min(2.5, +(base.max + adj.maxAdd).toFixed(2));
+
+        const minGrams = Math.round(weightKg * minMult);
+        const maxGrams = Math.round(weightKg * maxMult);
+        const optimalGrams = Math.round((minGrams + maxGrams) / 2);
+
+        document.getElementById('protein-optimal').textContent = optimalGrams;
+        document.getElementById('protein-range').textContent = `${minGrams} – ${maxGrams} g`;
+        document.getElementById('protein-kcal-equiv').textContent = `~${optimalGrams * 4} kcal from protein`;
+        document.getElementById('protein-multiplier-note').textContent =
+          `Evidence-based multiplier: ${minMult.toFixed(1)} – ${maxMult.toFixed(1)} g per kg body weight`;
+
+        document.getElementById('protein-3-meals').textContent = `${Math.round(optimalGrams / 3)}g`;
+        document.getElementById('protein-4-meals').textContent = `${Math.round(optimalGrams / 4)}g`;
+      } catch (err) {
+        console.error('Protein calculation error:', err);
+      }
+    }
+
+    function renderHighProteinProduce() {
+      const container = document.getElementById('high-protein-produce-list');
+      if (!container) return;
+
+      // Pick top 6 highest-protein items from the built-in catalog
+      const topSix = [...PRODUCE_DATA]
+        .sort((a, b) => b.protein - a.protein)
+        .slice(0, 6);
+
+      container.innerHTML = topSix
+        .map(
+          (item) => `
+            <button
+              type="button"
+              onclick="openNutritionModal('${item.id}')"
+              class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50/80 border border-slate-200/70 hover:border-emerald-200 transition-all text-left group"
+            >
+              <div class="w-11 h-11 rounded-xl ${item.bgClass} flex items-center justify-center text-2xl shrink-0 group-hover:scale-105 transition-transform">
+                ${renderIconHTML(item)}
+              </div>
+              <div class="min-w-0">
+                <span class="block text-sm font-bold text-slate-900 truncate group-hover:text-emerald-700">${item.name}</span>
+                <span class="block text-xs font-extrabold text-emerald-600">${item.protein.toFixed(1)}g protein</span>
+                <span class="block text-[11px] text-slate-400">${item.calories} kcal / 100g</span>
+              </div>
+            </button>
+          `
+        )
+        .join('');
+    }
+
+    function jumpToHighProteinExplorer() {
+      document.getElementById('explorer-sort').value = 'high-protein';
+      setCategoryFilter('All');
+      switchTab('explorer');
+    }
+
+    // =========================================================================
+    // 9. INITIALIZE APPLICATION ON LOAD
+    // =========================================================================
+    function initNutriVital() {
+      // Update dynamic category counts in filter pills
+      const fruitCount = PRODUCE_DATA.filter((i) => i.category === 'Fruit').length;
+      const vegCount = PRODUCE_DATA.filter((i) => i.category === 'Vegetable').length;
+      document.getElementById('count-all').textContent = `(${PRODUCE_DATA.length})`;
+      document.getElementById('count-fruit').textContent = `(${fruitCount})`;
+      document.getElementById('count-vegetable').textContent = `(${vegCount})`;
+
+      // Render initial views & calculations
+      renderProduceGrid();
+      renderHighProteinProduce();
+      calculateBMI();
+      calculateProtein();
+    }
+
+    window.addEventListener('DOMContentLoaded', initNutriVital);
+  </script>
+</body>
+</html>
